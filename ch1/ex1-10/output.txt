@@ -1,0 +1,35 @@
+0.53s   532221  https://www.youtube.com
+0.57s     4154  http://gopl.io
+0.57s     4154  http://gopl.io
+0.57s elapsed
+0.25s     8424  https://www.fantrax.com
+0.50s   525993  https://www.youtube.com
+0.56s     4154  http://gopl.io
+0.56s elapsed
+0.27s     8424  https://www.fantrax.com
+0.52s   621582  https://www.youtube.com
+0.54s     4154  http://gopl.io
+0.89s   296858  https://www.reddit.com
+0.89s elapsed
+0.25s     8424  https://www.fantrax.com
+0.28s    13146  https://www.google.com
+0.57s   610340  https://www.youtube.com
+0.60s     4154  http://gopl.io
+0.73s   365573  https://amazon.com
+4.12s   296858  https://www.reddit.com
+4.12s elapsed
+0.22s     8424  https://www.fantrax.com
+0.26s    13194  https://www.google.com
+0.46s   296858  https://www.reddit.com
+0.48s   525914  https://www.youtube.com
+0.57s     4154  http://gopl.io
+0.58s   378913  https://amazon.com
+0.58s elapsed
+0.23s     8424  https://www.fantrax.com
+0.27s    13204  https://www.google.com
+0.47s   578881  https://www.youtube.com
+0.47s    68977  https://wikipedia.org
+0.58s     4154  http://gopl.io
+0.61s   366056  https://amazon.com
+1.47s   296858  https://www.reddit.com
+1.47s elapsed

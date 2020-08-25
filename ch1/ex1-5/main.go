@@ -9,6 +9,9 @@
 // Exercise 1.5: Change the Lissasjous program's color palette to green on black, for added authenticity. To create
 // web color #RRGGBB, use color.RGBA{0xRR, 0xGG, 0xBB, 0xff}, where each pair of hexadecimal digits represents the
 // intensity of the red, green, or blue component of the pixel
+
+// Exercise 1.6: Modify the Lissajous program to produce images in multiple colors by adding more values to palette
+// and then displaying them by changing the third argument of setColorIndex in some interesting way
 package main
 
 import (
@@ -16,50 +19,39 @@ import (
 	"image/color"
 	"image/gif"
 	"io"
-	"log"
 	"math"
 	"math/rand"
-	"net/http"
 	"os"
-	"time"
 )
 
 //!-main
 // Packages not needed by version in book.
 
 //!+main
+var green = color.RGBA{0x00, 0xff, 0x00, 0xff}
+var blue = color.RGBA{0x00, 0x00, 0xff, 0xff}
+var red = color.RGBA{0xff, 0xff, 0x00, 0x00}
+var palette = []color.Color{color.Black, color.White, green, blue, red}
 
-var palette = []color.Color{color.White, color.Black}
+// var palette = []color.Color{color.White, color.Black}
 
 const (
-	whiteIndex = 0 // first color in palette
-	blackIndex = 1 // next color in palette
+	// whiteIndex = 0 // first color in palette
+	// blackIndex = 1 // next color in palette
+	blackIndex = 0 // first color in palette
+	whiteIndex = 1
+	greenIndex = 2
+	blueIndex  = 3
+	redIndex   = 4
 )
 
 func main() {
-	//!-main
-	// The sequence of images is deterministic unless we seed
-	// the pseudo-random number generator using the current time.
-	// Thanks to Randall McPherson for pointing out the omission.
-	rand.Seed(time.Now().UTC().UnixNano())
-
-	if len(os.Args) > 1 && os.Args[1] == "web" {
-		//!+http
-		handler := func(w http.ResponseWriter, r *http.Request) {
-			lissajous(w)
-		}
-		http.HandleFunc("/", handler)
-		//!-http
-		log.Fatal(http.ListenAndServe("localhost:8000", nil))
-		return
-	}
-	//!+main
 	lissajous(os.Stdout)
 }
 
 func lissajous(out io.Writer) {
 	const (
-		cycles  = 5     // number of complete x oscillator revolutions
+		cycles  = 4     // number of complete x oscillator revolutions
 		res     = 0.001 // angular resolution
 		size    = 100   // image canvas covers [-size..+size]
 		nframes = 64    // number of animation frames
@@ -74,8 +66,10 @@ func lissajous(out io.Writer) {
 		for t := 0.0; t < cycles*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-				blackIndex)
+			xPos := size + int(x*size+0.5)
+			yPos := size + int(y*size+0.5)
+			i := uint8(1 + rand.Float64()*4.0) // randomize color index
+			img.SetColorIndex(xPos, yPos, i)
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)
