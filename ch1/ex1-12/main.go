@@ -24,8 +24,7 @@ import (
 )
 
 type lissajousParams struct {
-	cycles int
-	size   int
+	cycles, size int
 }
 
 func main() {
