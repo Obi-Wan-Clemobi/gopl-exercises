@@ -21,11 +21,28 @@ import (
 	"strconv"
 )
 
+// Parsed arg value with unit
+type ParsedValue struct {
+	Value float64
+	Unit  string
+}
+
 func main() {
 	if len(os.Args) > 1 {
-		parseArgsAndConvert()
+		for _, arg := range os.Args[1:] {
+			exec(arg)
+		}
 	} else {
 		readStdin()
+	}
+}
+
+func exec(arg string) {
+	value, err := parse(arg)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		convert(value)
 	}
 }
 
@@ -33,22 +50,14 @@ func readStdin() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
-		fmt.Println("Got input: ", scanner.Text())
+		exec(scanner.Text())
 	}
 }
 
-func parseArgsAndConvert() {
-	for _, arg := range os.Args[1:] {
-		value, unit, err := parse(arg)
-		if err != nil {
-			fmt.Println("Invalid input: ", arg)
-			return
-		}
-		convert(value, unit)
-	}
-}
+func convert(parsedValue ParsedValue) {
+	value := parsedValue.Value
+	unit := parsedValue.Unit
 
-func convert(value float64, unit string) {
 	if unit == "m" {
 		fmt.Printf("%g%s = %s\n", value, unit, lengthconv.MToFt(lengthconv.Meter(value)).String())
 	} else if unit == "ft" {
@@ -62,21 +71,21 @@ func convert(value float64, unit string) {
 	}
 }
 
-func parse(arg string) (float64, string, error) {
+func parse(arg string) (ParsedValue, error) {
 	regex := regexp.MustCompile("^([-+]?\\d*\\.?\\d+)\\s?(\\w+)$")
 	result := regex.FindStringSubmatch(arg)
 	if len(result) < 2 {
-		return 0, "", fmt.Errorf("Invalid input: %s", arg)
+		return ParsedValue{0, ""}, fmt.Errorf("Invalid input: %s", arg)
 	}
 
 	value, err := strconv.ParseFloat(result[1], 64)
 	unit := result[2]
 
 	if err != nil {
-		return 0, "", err
+		return ParsedValue{0, ""}, err
 	}
 
-	return value, unit, nil
+	return ParsedValue{value, unit}, nil
 }
 
 //!-
