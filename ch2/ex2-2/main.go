@@ -49,7 +49,6 @@ func parseArgsAndConvert() {
 }
 
 func convert(value float64, unit string) {
-
 	if unit == "m" {
 		fmt.Printf("%g%s = %s\n", value, unit, lengthconv.MToFt(lengthconv.Meter(value)).String())
 	} else if unit == "ft" {
@@ -66,6 +65,9 @@ func convert(value float64, unit string) {
 func parse(arg string) (float64, string, error) {
 	regex := regexp.MustCompile("^([-+]?\\d*\\.?\\d+)\\s?(\\w+)$")
 	result := regex.FindStringSubmatch(arg)
+	if len(result) < 2 {
+		return 0, "", fmt.Errorf("Invalid input: %s", arg)
+	}
 
 	value, err := strconv.ParseFloat(result[1], 64)
 	unit := result[2]
